@@ -7,12 +7,17 @@ const Login = () => {
   const [errorMessage, setErrorMessage] = useState(null);
   const email = useRef(null);
   const password = useRef(null);
+  const nameValid = useRef(null);
 
   const toggleSignIn = () => {
     setIsSignInForm(!isSignInForm);
   };
   const handleButtonClick = () => {
-    const message = validateForm(email.current.value, password.current.value);
+    const message = validateForm(
+      email.current.value,
+      password.current.value,
+      nameValid.current.value
+    );
     setErrorMessage(message);
   };
 
@@ -35,6 +40,7 @@ const Login = () => {
         </h4>
         {!isSignInForm && (
           <input
+            ref={nameValid}
             type="text"
             placeholder="Name"
             className="p-4 m-4 w-10/12 pr-6 bg-gray-700"
@@ -52,7 +58,11 @@ const Login = () => {
           placeholder="Password"
           className="p-4 m-4 w-10/12 pr-6 bg-gray-700"
         />
-        <p className="text-red-700 font-bold px-4">{errorMessage}</p>
+        {!isSignInForm ? (
+          <p className="text-red-700 font-bold px-4">{errorMessage}</p>
+        ) : (
+          ""
+        )}
         <button
           className="p-4 m-4 w-10/12 pr-6 text-black rounded-lg bg-red-800"
           onClick={handleButtonClick}

@@ -6,6 +6,10 @@
 - Routing of form
 - Login Form
 - Form Validation -> useRef hook
+- Firebase setup
+- Deploying code to production:https://netflix-gpt-1f5f7.web.app
+- Creating sign up user account in firebase
+- sign in/sign up authentication using firebase
 
 # Features
 

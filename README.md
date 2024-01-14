@@ -1,11 +1,13 @@
-Netflix-gpt
+# Netflix-gpt
 
 - create react app
 - configured tailwind css
 - Header
-  - Login Form
+- Routing of form
+- Login Form
+- Form Validation -> useRef hook
 
-Features
+# Features
 
 - creating routing
 - Login Signup

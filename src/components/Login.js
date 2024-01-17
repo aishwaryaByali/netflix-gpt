@@ -7,16 +7,16 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { auth } from "../utils/firebase";
-import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
+import { BG_LOGO, PHOTO_URL } from "../utils/constant";
+
 const Login = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
   const email = useRef(null);
   const password = useRef(null);
   const nameValid = useRef(null);
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const toggleSignIn = () => {
     setIsSignInForm(!isSignInForm);
@@ -46,19 +46,16 @@ const Login = () => {
           const user = userCredentials.user;
           updateProfile(user, {
             displayName: nameValid.current.value,
-            photoURL:
-              "https://static.vecteezy.com/system/resources/thumbnails/007/407/996/small/user-icon-person-icon-client-symbol-login-head-sign-icon-design-vector.jpg",
+            photoURL: PHOTO_URL,
           })
             .then(() => {
               const { uid, email, photoURL, displayName } = auth.currentUser;
               dispatch(addUser, {
                 uid,
-                displayName: user.displayName,
+                displayName: displayName,
                 email,
-                photoURL:
-                  "https://static.vecteezy.com/system/resources/thumbnails/007/407/996/small/user-icon-person-icon-client-symbol-login-head-sign-icon-design-vector.jpg",
+                photoURL: photoURL,
               });
-              navigate("/browse");
             })
             .catch((error) => {
               setErrorMessage(error.message);
@@ -78,7 +75,6 @@ const Login = () => {
       )
         .then((userCredentials) => {
           const user = userCredentials.user;
-          navigate("/browse");
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -92,11 +88,7 @@ const Login = () => {
     <div>
       <Header />
       <div className="absolute">
-        <img
-          className="h-auto w-full"
-          src="https://assets.nflxext.com/ffe/siteui/vlv3/594f8025-139a-4a35-b58d-4ecf8fdc507c/d3c4e455-f0bf-4003-b7cd-511dda6da82a/IN-en-20240108-popsignuptwoweeks-perspective_alpha_website_large.jpg"
-          alt="bg-img"
-        />
+        <img className="h-auto w-full" src={BG_LOGO} alt="bg-img" />
       </div>
       <form
         onSubmit={(e) => e.preventDefault()}

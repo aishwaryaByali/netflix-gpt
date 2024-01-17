@@ -10,6 +10,8 @@
 - Deploying code to production:https://netflix-gpt-1f5f7.web.app
 - Creating sign up user account in firebase
 - sign in/sign up authentication using firebase
+- setting up redux store
+- created user store with user Slice
 
 # Features
 

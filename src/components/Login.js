@@ -4,15 +4,20 @@ import { validateForm } from "../utils/validate";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  updateProfile,
 } from "firebase/auth";
 import { auth } from "../utils/firebase";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addUser } from "../utils/userSlice";
 const Login = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
   const email = useRef(null);
   const password = useRef(null);
   const nameValid = useRef(null);
-
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const toggleSignIn = () => {
     setIsSignInForm(!isSignInForm);
   };
@@ -39,7 +44,25 @@ const Login = () => {
       )
         .then((userCredentials) => {
           const user = userCredentials.user;
-          // console.log("user", user);
+          updateProfile(user, {
+            displayName: nameValid.current.value,
+            photoURL:
+              "https://static.vecteezy.com/system/resources/thumbnails/007/407/996/small/user-icon-person-icon-client-symbol-login-head-sign-icon-design-vector.jpg",
+          })
+            .then(() => {
+              const { uid, email, photoURL, displayName } = auth.currentUser;
+              dispatch(addUser, {
+                uid,
+                displayName: user.displayName,
+                email,
+                photoURL:
+                  "https://static.vecteezy.com/system/resources/thumbnails/007/407/996/small/user-icon-person-icon-client-symbol-login-head-sign-icon-design-vector.jpg",
+              });
+              navigate("/browse");
+            })
+            .catch((error) => {
+              setErrorMessage(error.message);
+            });
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -55,11 +78,12 @@ const Login = () => {
       )
         .then((userCredentials) => {
           const user = userCredentials.user;
-          // console.log("user", user);
+          navigate("/browse");
         })
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
+          setErrorMessage(errorCode + "-" + errorMessage);
         });
     }
   };
